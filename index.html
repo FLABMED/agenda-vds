@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AGENDA PÚBLICA LAB VDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script>try{if(/[?&]embed=1\b/.test(location.search))document.documentElement.classList.add("embed")}catch(e){}</script>
+<style>
+:root{
+  --navy:#0e1541;
+  --c-tec:#300370; --c-inv:#1947ba; --c-inn:#00a0e0; --c-emp:#5fcfe3;
+  --bg:#ffffff; --surface:#f1f5fb; --line:#dbe3f0; --text:#0e1541; --muted:#56608a;
+  --lane-flab:#1947ba; --lane-block:#300370; --lane-vds:#00a0e0; --lane-side:#1947ba; --lane-par:#3fb8d3;
+  --warn:#c2410c;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1136; --surface:#141c4d; --line:#26306a; --text:#eef3ff; --muted:#a3b2da;
+    --lane-flab:#3d74e6; --lane-block:#5fcfe3; --lane-vds:#00a0e0; --lane-side:#3d74e6; --lane-par:#3fb8d3;
+    --warn:#fb923c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1136; --surface:#141c4d; --line:#26306a; --text:#eef3ff; --muted:#a3b2da;
+  --lane-flab:#3d74e6; --lane-block:#5fcfe3; --lane-vds:#00a0e0; --lane-side:#3d74e6; --lane-par:#3fb8d3;
+  --warn:#fb923c;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--c-inn);outline-offset:2px}
+
+/* Header: estilo piezas stand 2026 */
+.hero{color:#fff;position:relative;overflow:hidden;
+  background-color:#0aa0dc;
+  background-image:
+    linear-gradient(180deg, transparent 60%, rgba(24,24,96,.45) 100%),
+    linear-gradient(90deg, rgba(10,160,220,.55) 0%, rgba(10,160,220,0) 40%),
+    url("img/fondo-banner.webp");
+  background-size:cover,cover,cover;background-position:center,center,right center;background-repeat:no-repeat}
+.hero-inner{position:relative;max-width:1280px;margin:0 auto;padding:40px 24px 30px}
+.hero h1,.hero p,.hero .tagline,.day-tab{text-shadow:0 1px 14px rgba(12,22,90,.55)}
+.hero .logo{display:block;height:auto;width:min(300px,62vw);margin:0 0 30px}
+.hero h1{margin:0;font-weight:800;font-size:clamp(28px,4.4vw,48px);line-height:1.05;letter-spacing:-.01em;max-width:18ch}
+.hero p{margin:10px 0 0;color:#eaf6ff;font-size:15px;font-weight:600}
+.hero .tagline{margin-top:18px;font-weight:700;font-size:17px;color:#fff}
+.hero .draft{display:inline-block;margin-top:14px;font-size:13px;color:#fff;background:rgba(14,21,65,.35);border:1px solid rgba(255,255,255,.45);border-radius:4px;padding:3px 8px}
+
+/* Day tabs */
+.days{display:flex;gap:0;max-width:1280px;margin:0 auto;padding:0 24px;overflow-x:auto;position:relative}
+.day-tab{background:none;border:0;border-bottom:4px solid transparent;cursor:pointer;
+  padding:14px 18px 12px;text-align:left;color:#dbe8ff;min-width:150px;flex:0 0 auto}
+.day-tab .n{display:block;font-size:30px;font-weight:800;line-height:1;color:#fff;opacity:.6}
+.day-tab .l{display:block;font-size:13px;margin-top:4px;max-width:20ch}
+.day-tab[aria-selected="true"]{border-bottom-color:#fff;color:#fff}
+.day-tab[aria-selected="true"] .n{opacity:1;color:#fff}
+.day-tab:hover .n{opacity:.9}
+.hero :focus-visible{outline-color:#fff}
+
+/* Toolbar */
+main{max-width:1280px;margin:0 auto;padding:22px 24px 60px}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-bottom:18px}
+.toolbar h2{margin:0;font-size:20px;font-weight:700;flex:1 1 280px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.chip[aria-pressed="false"]{opacity:.45;text-decoration:line-through}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block;border:2px solid var(--lane-flab)}
+.sw.confirmado{background:var(--lane-flab)}
+.sw.propuesto{background:color-mix(in srgb,var(--lane-flab) 18%,transparent)}
+.sw.vds{background:color-mix(in srgb,var(--lane-flab) 18%,transparent);border-style:double;border-width:3px}
+.sw.sin{background:transparent;border-style:dashed}
+.alert{width:100%;font-size:14px;color:var(--warn);display:flex;gap:8px;align-items:flex-start}
+.alert:empty{display:none}
+
+/* Timetable */
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.tt{display:grid;min-width:max-content}
+.lane-head{position:relative;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--surface);font-weight:700;font-size:15px;border-left:1px solid var(--line)}
+.lane-head small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.lane-head::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--lc)}
+.axis-head{background:var(--surface);border-bottom:1px solid var(--line)}
+.axis{position:relative;position:sticky;left:0;background:var(--bg);z-index:3;border-right:1px solid var(--line)}
+.axis span{position:absolute;right:8px;transform:translateY(-50%);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.axis span.hr{color:var(--text);font-weight:700}
+.lane{position:relative;border-left:1px solid var(--line)}
+.band{position:absolute;left:4px;width:6px;border-radius:3px;background:var(--lane-block)}
+.band-label{position:absolute;left:14px;font-size:11px;color:var(--lane-block);font-weight:700;transform:translateY(-100%);padding-bottom:2px;white-space:nowrap}
+
+.ev{position:absolute;left:16px;right:8px;border-radius:6px;text-align:left;cursor:pointer;
+  padding:5px 9px;border:0;border-left:4px solid var(--lc);display:flex;flex-direction:column;justify-content:flex-start;gap:1px;
+  background:color-mix(in srgb,var(--lc) 13%,var(--bg));overflow:hidden;
+  transition:transform .12s ease, box-shadow .12s ease}
+.ev:hover{transform:translateX(2px);box-shadow:0 2px 10px color-mix(in srgb,var(--lc) 30%,transparent)}
+.ev .t{font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;gap:6px;align-items:center}
+.ev .ti{font-size:13.5px;font-weight:700;line-height:1.25;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+.ev.confirmado{background:var(--lc);color:#fff}
+.ev.confirmado .t{color:#ffffffcc}
+.ev.sin{border:2px dashed var(--lc);border-left-width:4px;border-left-style:solid;background:transparent}
+.ev.open-end{border-bottom-left-radius:0;border-bottom-right-radius:0;
+  -webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+.ev.clash{box-shadow:0 0 0 2px var(--warn)}
+.ev .tag{font-size:10.5px;font-weight:700;padding:0 5px;border-radius:3px;background:var(--warn);color:#fff}
+.ev .tag.vds{background:transparent;border:1px solid currentColor;color:var(--lc)}
+.ev.tent{border:2px dashed var(--lc);border-left-width:4px;border-left-style:dashed;
+  background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--lc) 16%,var(--bg)) 0 7px,var(--bg) 7px 14px)}
+.ev .tag.tent{background:transparent;border:1px dashed currentColor;color:var(--muted)}
+.legend-tent{display:inline-flex;align-items:center;gap:7px;font-size:13px;padding:5px 4px;color:var(--muted)}
+.legend-tent i{width:16px;height:12px;border:1.5px dashed var(--muted);border-radius:3px;
+  background:repeating-linear-gradient(135deg,var(--line) 0 3px,transparent 3px 6px)}
+.dim{opacity:.18}
+
+/* Pending tray */
+.tray{margin-top:28px}
+.tray h3{font-size:17px;margin:0 0 4px}
+.tray > p{margin:0 0 12px;color:var(--muted);font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.card{text-align:left;display:block;border:2px dashed var(--line);border-left:4px solid var(--lc);border-radius:8px;background:var(--surface);padding:12px 14px;cursor:pointer}
+.card .who{font-size:12px;color:var(--muted)}
+.card .ti{font-weight:700;font-size:15px;margin:3px 0 6px;line-height:1.25}
+.card .when{font-size:12.5px;color:var(--warn);font-weight:600}
+.card:hover{border-color:var(--lc)}
+
+/* Dialog */
+dialog{border:0;border-radius:12px;padding:0;max-width:min(560px,92vw);width:100%;max-height:90vh;overflow:auto;background:var(--bg);color:var(--text);box-shadow:0 20px 60px #0008}
+dialog::backdrop{background:#0e1541aa}
+.dlg-top{padding:18px 22px 14px;border-top:6px solid var(--lc)}
+.dlg-top .meta{font-size:13px;color:var(--muted)}
+.dlg-top h3{margin:6px 0 0;font-size:21px;line-height:1.2}
+.dlg-body{padding:0 22px 20px;font-size:15px}
+.dlg-body dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+.dlg-body dt{color:var(--muted);font-size:13px;padding-top:2px}
+.dlg-body dd{margin:0}
+.dlg-body .clash-note{margin-top:14px;color:var(--warn);font-size:14px}
+.close{position:absolute;top:10px;right:10px;background:var(--surface);border:0;border-radius:6px;width:34px;height:34px;cursor:pointer;font-size:18px}
+
+
+/* Plano */
+.map-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px;background:#eef1f5}
+.map{position:relative;min-width:820px}
+.map img{display:block;width:100%;height:auto}
+.pin{position:absolute;transform:translate(-50%,-50%);pointer-events:none}
+.pin .dot{display:block;width:18px;height:18px;border-radius:50%;background:var(--pc);border:3px solid #fff;box-shadow:0 0 0 2px var(--pc)}
+.pin .ring{position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;border:3px solid var(--pc);animation:pulse 1.8s ease-out infinite}
+.pin .lab{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);white-space:nowrap;background:var(--pc);color:#fff;font-size:13px;font-weight:700;padding:4px 9px;border-radius:5px;box-shadow:0 3px 10px #0e154155}
+.pin .lab.brand{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#0e1541;border:2px solid #fff}
+.pin .lab.brand img{display:block;width:118px;height:auto}
+.pin .lab.brand b{font-size:12px;color:#5fcfe3;border-left:1px solid #ffffff55;padding-left:8px}
+.pin.muted .ring{display:none}
+.pin.muted .dot{width:14px;height:14px}
+.pin.muted .lab{font-size:11.5px;padding:3px 7px;opacity:.9}
+@keyframes pulse{from{transform:scale(1);opacity:.9}to{transform:scale(3.2);opacity:0}}
+.map-notes{margin:12px 2px 0;color:var(--muted);font-size:14px;max-width:75ch}
+.map-notes p{margin:0 0 6px}
+.mini{height:250px;overflow:auto;border-radius:8px;border:1px solid var(--line);margin-top:10px;background:#eef1f5}
+.mini .map{min-width:0;width:1250px}
+.maplink{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer;font-weight:600;font-size:14px}
+.loc-note{font-size:12.5px;color:var(--muted);margin-top:6px}
+@media (prefers-reduced-motion: reduce){ .pin .ring{animation:none;display:none} }
+
+/* Modo incrustado (?embed=1) */
+html.embed .hero-inner{display:none}
+html.embed .hero{background-image:linear-gradient(90deg,#0aa0dc,#2a3f9e 70%,#3a2580)}
+html.embed .days{padding-top:6px}
+html.embed dialog{position:absolute;margin:0 auto;left:0;right:0}
+footer{max-width:1280px;margin:0 auto;padding:0 24px 40px;color:var(--muted);font-size:13px}
+footer a{color:var(--lane-flab)}
+
+@media (max-width:640px){
+  .hero-inner{padding-top:28px}
+  .hero{background-position:center,center,62% center}
+  main{padding:18px 14px 50px}
+  .days{padding:0 10px}
+  .day-tab{min-width:120px;padding:12px 12px 10px}
+}
+@media (prefers-reduced-motion: reduce){ .ev{transition:none} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <img class="logo" src="img/logo-flab.png" alt="Fundación LAB Mediterráneo" width="1610" height="273">
+    <h1>VDS 2026</h1>
+    <p>Agenda de Fundación LAB en Valencia Digital Summit 2026, 21 y 22 de octubre</p>
+    <div class="tagline">Become &amp; Be Big with LAB</div>
+    <span class="draft">Programa sujeto a cambios</span>
+  </div>
+  <nav class="days" role="tablist" id="days" aria-label="Días del programa"></nav>
+</header>
+
+<main>
+  <div class="toolbar">
+    <h2 id="day-title"></h2>
+    <div class="chips" id="chips" aria-label="Filtrar por estado"></div>
+    <div class="alert" id="alert" role="status"></div>
+  </div>
+  <div id="view"></div>
+</main>
+
+<footer>
+  Programación general en <a href="https://vds.tech/activities/" target="_blank" rel="noopener">vds.tech/activities</a>.
+</footer>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <button class="close" id="dlg-close" aria-label="Cerrar">✕</button>
+  <div class="dlg-top"><div class="meta" id="dlg-meta"></div><h3 id="dlg-title"></h3></div>
+  <div class="dlg-body" id="dlg-body"></div>
+</dialog>
+
+<script>
+const LANES = {
+  b1:{name:"Base One", sub:"Side event", color:"var(--c-inv)"},
+  edem:{name:"Auditorio EDEM", sub:"Side event", color:"var(--c-inv)"},
+  lz:{name:"Lanzadera", sub:"Side event", color:"var(--lane-flab)"},
+  ins:{name:"Insomnia", sub:"Side event", color:"var(--c-inn)"},
+  veles:{name:"Veles e Vents", sub:"Side event", color:"var(--lane-block)"},
+  flab:{name:"Programa FLAB", sub:"Cronología principal", color:"var(--lane-flab)"},
+  vds:{name:"Otros escenarios VDS", sub:"Programación general", color:"var(--lane-vds)"},
+  par:{name:"Actividades paralelas", sub:"FLAB en VDS", color:"var(--lane-par)"}
+};
+const STATUS = {
+  confirmado:"Confirmado",
+  propuesto:"Propuesto",
+  vds:"Hora fijada por VDS",
+  sin:"Sin estado indicado"
+};
+const LOCS = {
+  p4:{name:"P4 · Fundación LAB", x:55.91, y:55.91, color:"#1947ba"},
+  main:{name:"Main Stage", x:58.47, y:33.10, color:"#00a0e0"},
+  agora:{name:"Ágora Stage", x:73.81, y:23.98, color:"#300370"},
+  discovery:{name:"Discovery Stage", x:56.52, y:19.30, color:"#5b2bd6"}
+};
+const MAP_SRC = "img/plano-vds.webp";
+const DAYS = [
+  {id:"d20", n:"20", dow:"Martes", label:"Side events", lanes:["veles"]},
+  {id:"d21", n:"21", dow:"Miércoles", label:"Empresas y ecosistema emprendedor", lanes:["flab","vds"]},
+  {id:"d22", n:"22", dow:"Jueves", label:"Datos, ciencia y nuevas capacidades", lanes:["flab","vds"],
+   band:{lane:"flab", start:"12:30", end:"16:00", label:"Bloque estratégico: De la investigación al mercado"}},
+  {id:"tbd", n:"?", dow:"", label:"Por encajar (sin día)", lanes:[]},
+  {id:"map", n:"P4", dow:"", label:"Plano del recinto", lanes:[]}
+];
+
+const E = [
+  // 20 octubre
+  {d:"d20",lane:"veles",s:"19:00",e:null,st:"sin",ti:"VDS Guest Reception",desc:"Recepción VDS. Side event, agenda VDS.",venue:"Veles e Vents",aud:"Invitación FLAB a patronos y colaboradores",note:"Hora de fin no indicada."},
+
+  // 21 octubre
+  {d:"d21",lane:"flab",s:"12:00",e:"12:30",st:"propuesto",ti:"Fórmulas y arquitecturas de inversión",desc:"Mesa. Modera Luz Adell, partner y CFO Draper B1.",who:"Ramón Ferrandis, director Club Inversión Point CEEI Valencia; Pablo García, director de Inversiones Empresariales de Invext; Juan Antonio Just, director comercial de Atalaya AI; Luis Llorens, Principal EMEA Fund Management de Plug and Play"},
+  {d:"d21",lane:"flab",s:"12:30",e:"12:55",st:"propuesto",ti:"Hubs corporativos: palancas para acelerar la innovación en los ecosistemas",desc:"Mesa. Modera Darío Olivares, responsable de Corporate de Lanzadera.",who:"Guillermo Berlanga, director corporativo de Innovación de Nealis; Vicente Choví, coordinador de Proyectos y Gestión de Innovación Abierta de Familia Martínez / KM ZERO; S2X (S2 Grupo): Jordi Oliver"},
+  {d:"d21",lane:"flab",s:"13:00",e:"13:40",st:"confirmado",ti:"Deloitte Technology Fast 50: las empresas que están redefiniendo el crecimiento tecnológico",desc:"Mesa. Modera Mario Tejeiro, Deloitte.",who:"Pablo Carrillo, CMO de Fourvenues; Fernando Pérez, CEO de Aunoa; Xavier Sans, CEO de Frekuent"},
+  {d:"d21",lane:"flab",s:"13:45",e:"14:25",st:"confirmado",ti:"The AI Advantage: de la inteligencia artificial a la ventaja competitiva",desc:"Presentación del Centro de Excelencia en Inteligencia Artificial de Plug and Play en España y mesa con Multiverse Computing y S2 Grupo. Sesión en inglés.",who:"Nuño Arroyo, Global CFO de Plug and Play; Rohith Varma, Head of Sales UK de Multiverse Computing; Sergio Villanueva, AI Team Manager de S2 Grupo"},
+  {d:"d21",lane:"vds",s:"11:00",e:"12:15",st:"confirmado",ti:"Paseo institucional por VDS",desc:"Recorrido de la comitiva institucional por VDS.",note:"Participa el presidente de Fundación LAB en la comitiva."},
+  {d:"d21",lane:"vds",s:"13:30",e:null,st:"vds",ti:"Bienvenida institucional a VDS",venue:"Main Stage",note:"Hora facilitada por la organización. Hora de fin no indicada."},
+  {d:"d21",lane:"vds",s:"10:30",e:"10:50",st:"propuesto",ti:"La nueva generación de empresas y proyectos",desc:"Panel. Modera CaixaBank.",who:"Guillermo Berlanga, director corporativo de Innovación de Nealis; Enrique Ferre, CIO de Válvulas ARCO; Eva Giner, directora de Innovación de SPB; junto a dos startups",venue:"Stand de CaixaBank"},
+  {d:"d21",lane:"flab",s:"14:30",e:"16:00",st:"confirmado",ti:"Corporate Networking Lunch",desc:"Encuentro de corporaciones nacionales, patronos y Empresas Colaboradoras de Fundación LAB.",who:"Colaboran Area 101 y The Terminal Hub"},
+  {d:"d21",lane:"flab",s:"16:00",e:"16:20",st:"confirmado",ti:"Movilidad inteligente: nuevos servicios a partir del dato",desc:"Mesa. Modera Javier Sánchez, coordinador de REDIT Mobility.",who:"Jackie Sánchez-Molero, directora general de AVIA (Clúster de Automoción y Movilidad de la CV); Marga Sardá Lino, directora de Innovación de MAPFRE y Startup de datos para soluciones predictivas (TBC)"},
+  {d:"d21",lane:"flab",s:"16:25",e:"17:50",st:"propuesto",ti:"Corporate Challenges: tres retos, quince soluciones",desc:"Pitches: MAPFRE, Familia Martínez y GDES plantean un reto cada una; cinco startups proponen soluciones por reto.",who:"Conducido por Fundación LAB y Darío Olivares, Corporate Executive Lanzadera"},
+  {d:"d21",lane:"flab",s:"17:50",e:"18:30",st:"propuesto",ti:"Encuentros entre corporaciones y startups",desc:"Matchmaking: espacio de reunión entre las corporaciones y startups participantes."},
+
+  // 22 octubre
+  {d:"d22",lane:"flab",s:"10:30",e:"11:00",st:"confirmado",ti:"La Comunitat Valenciana en datos (1/2): presentaciones de los observatorios",desc:"Tres presentaciones, una por observatorio.",who:"Observatorio de Startups, Diana Mery, Startup Valencia; Observatorio de Inversión, Ana Guash, Big Ban Inversores y Observatorio :LAB, Juan Fernández, investigador Ivie"},
+  {d:"d22",lane:"flab",s:"11:00",e:"11:20",st:"confirmado",ti:"La Comunitat Valenciana en datos (2/2): panel",desc:"Panel tras las presentaciones de los observatorios.",who:"Pedro de Álava, presidente Big Ban Inversores; Marta Chillarón, directora de Fundación LAB; Nacho Más, CEO Startup Valencia, y Mónica Payá, DG de Emprendimiento e Internacionalización"},
+  {d:"d22",lane:"flab",s:"11:20",e:"11:40",st:"confirmado",ti:"Un ecosistema conectado: presentación de la Federación de Startups de la Comunitat Valenciana",desc:"Mesa.",who:"Francisco José Bea, presidente XarxaTEC; Juan Luis Ortelano, presidente Startup Valencia; Antonio Sánchez, presidente Alicantec y Confederación Empresarial de la Comunitat Valenciana (TBC)"},
+  {d:"d22",lane:"flab",block:1,s:"12:30",e:"12:50",st:"propuesto",ti:"Hacia un ecosistema deeptech-friendly",desc:"Diálogo de apertura del bloque estratégico.",who:"Raúl Martí, Open Innovation and Investment Manager Plug and Play, y Damià Tormo, cofundador Columbus Venture (TBC)"},
+  {d:"d22",lane:"flab",block:1,s:"12:50",e:"13:20",st:"propuesto",ti:"De la ciencia a la empresa: construir el camino de la transferencia",desc:"Panel.",who:"InnoTransfer, vicerrectorados de innovación y transferencia de UJI, UPV y Universidad de Alicante, y DG de Investigación"},
+  {d:"d22",lane:"flab",block:1,s:"13:20",e:"14:10",st:"propuesto",ti:"Science to Business: cinco capacidades con potencial de mercado",desc:"Pitches: presentaciones de capacidades y retos en alimentación, energía, cuántica y materiales, ante corporaciones interesadas en conocerlas (TBC). Conducido por FLAB.",who:"Cinco grupos o institutos de investigación vinculados a AccenT"},
+  {d:"d22",lane:"flab",block:1,s:"14:10",e:"14:30",st:"propuesto",ti:"Matchmaking: del conocimiento a la colaboración",desc:"Espacio de reunión entre investigadores, empresas y agentes de transferencia, en un formato de matchmaking trabajado previamente."},
+  {d:"d22",lane:"flab",block:1,s:"14:30",e:"15:30",st:"confirmado",ti:"Networking y comida: Corporate Networking Lunch",desc:"Encuentro de participantes e invitados de Fundación LAB.",note:"Colaborador TBC."},
+  {d:"d22",lane:"flab",block:1,s:"15:30",e:"16:00",st:"propuesto",ti:"Tecnologías para escalar: nuevas capacidades de nuestro ecosistema",desc:"Panel: capacidades tecnológicas, aplicaciones y oportunidades con grandes corporaciones.",who:"Empresas Colaboradoras de Fundación LAB"},
+  {d:"d22",lane:"vds",s:"10:30",e:"11:00",st:"confirmado",ti:"Corporations as catalysts for innovation and technology ecosystems",desc:"Panel. Modera Catalina Valencia, directora de comunidad y grandes eventos de KM ZERO. Sesión en inglés.",who:"Nealis, Guillermo Berlanga, director de Nealis Innovation HUB; Familia Martínez, Vicente Choví, coordinador de proyectos y gestión de innovación abierta; MAPFRE, Marga Sardá Lino, responsable área de innovación",venue:"Discovery Stage",loc:"discovery"},
+  {d:"d22",lane:"vds",s:"16:30",e:"18:00",st:"confirmado",ti:"Comitiva institucional VDS y paso por el stand de Fundación LAB",who:"Diana Morant, ministra de Ciencia, Innovación y Universidades",note:"Horario confirmado."},
+
+  // Sin día
+  {d:"d22",lane:"vds",s:"13:20",e:"14:40",st:"sin",ti:"Reuniones 1 to 1: corporaciones y comitiva de empresas coreanas",desc:"Reuniones one to one entre corporaciones y la comitiva de empresas coreanas.",who:"Comitiva coreana: KPC Metal, ACE Nanochem, Kyungrimtech, Samsung Metal, NEW PRIME y Tulip International",venue:"Ágora Stage",loc:"agora"},
+  ];
+E.forEach((ev,i)=>{
+  ev.id=i;
+  if(ev.lane==="flab" && !ev.noLoc && !ev.locFixed){ ev.loc="p4"; }
+});
+E.filter(e=>["Bienvenida institucional a VDS","Intervención de Saeed Amidi"].includes(e.ti)).forEach(e=>e.loc="main");
+E.filter(e=>e.venue==="Escenario central").forEach(e=>{e.loc="main"; e.locAssumed=true;});
+
+const PPM = 2.6;            // píxeles por minuto
+const OPEN_END = 25;        // duración visual para eventos sin hora de fin
+const toMin = t => { const [h,m]=t.split(":").map(Number); return h*60+m; };
+const fmt = m => String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+const endMin = ev => ev.e ? toMin(ev.e) : toMin(ev.s)+OPEN_END;
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const laneColor = ev => ev.block ? "var(--lane-block)" : LANES[ev.lane].color;
+
+let current = "d21";
+const active = new Set(Object.keys(STATUS));
+
+/* Coincidencias entre carriles distintos */
+function clashes(dayId){ return {};
+  const timed = E.filter(e=>e.d===dayId && e.s);
+  const map = {};
+  for(let i=0;i<timed.length;i++) for(let j=i+1;j<timed.length;j++){
+    const a=timed[i], b=timed[j];
+    if(a.lane===b.lane) continue;
+    if(toMin(a.s) < endMin(b) && toMin(b.s) < endMin(a)){
+      (map[a.id]=map[a.id]||[]).push(b); (map[b.id]=map[b.id]||[]).push(a);
+    }
+  }
+  return map;
+}
+
+function mapHTML(highlight){
+  const keys = highlight ? [highlight] : Object.keys(LOCS).filter(k=>k==="p4" || E.some(e=>e.loc===k));
+  return `<div class="map"><img src="${MAP_SRC}" alt="Plano del recinto de Valencia Digital Summit" width="1642" height="855">` +
+    keys.map(k=>{const L=LOCS[k]; const muted = !highlight && k!=="p4";
+      const lab = k==="p4" ? `<span class="lab brand"><img src="${document.querySelector(".hero .logo").src}" alt="Fundación LAB"><b>P4</b></span>` : `<span class="lab">${esc(L.name)}</span>`;
+      return `<span class="pin${muted?" muted":""}" style="left:${L.x}%;top:${L.y}%;--pc:${L.color}"><span class="ring"></span><span class="dot"></span>${lab}</span>`;}).join("") + `</div>`;
+}
+
+function renderTabs(){
+  const nav = document.getElementById("days");
+  nav.innerHTML = DAYS.filter(d=>d.id!=="tbd" || E.some(e=>e.d==="tbd")).map(d=>`<button class="day-tab" role="tab" id="tab-${d.id}" aria-selected="${d.id===current}" data-day="${d.id}">
+      <span class="n">${d.n}</span><span class="l">${d.dow?d.dow+". ":""}${esc(d.label)}</span></button>`).join("");
+  nav.querySelectorAll(".day-tab").forEach(b=>b.onclick=()=>{current=b.dataset.day; render();});
+}
+
+function renderChips(){
+  const box = document.getElementById("chips");
+  box.innerHTML = Object.entries(STATUS).map(([k,v])=>
+    `<button class="chip" aria-pressed="${active.has(k)}" data-st="${k}"><span class="sw ${k}"></span>${v}</button>`).join("") + `<span class="legend-tent"><i></i>Franja tentativa</span>`;
+  box.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{
+    const k=c.dataset.st; active.has(k)?active.delete(k):active.add(k); render();
+  });
+}
+
+function render(){
+  renderTabs(); renderChips();
+  const day = DAYS.find(d=>d.id===current);
+  if(current==="map"){
+    document.getElementById("day-title").textContent = "Plano del recinto";
+    document.getElementById("chips").innerHTML = "";
+    document.getElementById("alert").innerHTML = "";
+    const nP4 = E.filter(e=>e.loc==="p4").length, nMain = E.filter(e=>e.loc==="main").length;
+    document.getElementById("view").innerHTML = `<div class="map-wrap">${mapHTML(null)}</div>
+      <div class="map-notes">
+        <p><strong>P4:</strong> pavilion de Fundación LAB. ${nP4} sesiones del programa FLAB.</p>
+        ${Object.keys(LOCS).filter(k=>k!=="p4").map(k=>{const n=E.filter(e=>e.loc===k).length; return n?`<p><strong>${LOCS[k].name}:</strong> ${n} ${n===1?"evento":"eventos"}.</p>`:"";}).join("")}
+        <p>Desde la ficha de cada evento puedes abrir su ubicación con el botón «Ver en el plano».</p>
+      </div>`;
+    return;
+  }
+  document.getElementById("day-title").textContent =
+    day.id==="tbd" ? "Actividades sin día confirmado" : `${day.dow} ${day.n} de octubre: ${day.label}`;
+  const view = document.getElementById("view");
+  const evs = E.filter(e=>e.d===current);
+  const timed = evs.filter(e=>e.s);
+  const pending = evs.filter(e=>!e.s);
+  const cl = clashes(current);
+
+  const nClash = Object.keys(cl).length;
+  document.getElementById("alert").innerHTML = nClash
+    ? `<span aria-hidden="true">⚠</span><span>${nClash} eventos coinciden en horario entre carriles distintos. Aparecen marcados con borde naranja.</span>` : "";
+
+  let html = "";
+  if(timed.length){
+    let min = Math.min(...timed.map(e=>toMin(e.s)));
+    let max = Math.max(...timed.map(endMin));
+    min = Math.floor((min-15)/30)*30; max = Math.ceil((max+10)/30)*30;
+    const H = (max-min)*PPM;
+    const lanes = day.lanes.filter(l=>timed.some(e=>e.lane===l));
+    html += `<div class="scroller"><div class="tt" style="grid-template-columns:64px repeat(${lanes.length},minmax(250px,1fr))">`;
+    html += `<div class="axis-head"></div>`;
+    lanes.forEach(l=>html+=`<div class="lane-head" style="--lc:${LANES[l].color}">${LANES[l].name}<small>${LANES[l].sub}</small></div>`);
+    html += `<div class="axis" style="height:${H}px">`;
+    for(let m=min+30;m<max;m+=30) html+=`<span class="${m%60===0?"hr":""}" style="top:${(m-min)*PPM}px">${fmt(m)}</span>`;
+    html += `</div>`;
+    const grid = `repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px ${30*PPM}px)`;
+    lanes.forEach(l=>{
+      html += `<div class="lane" style="height:${H}px;background-image:${grid}">`;
+      if(day.band && day.band.lane===l){
+        const bs=toMin(day.band.start), be=toMin(day.band.end);
+        html += `<div class="band" style="top:${(bs-min)*PPM+2}px;height:${(be-bs)*PPM-4}px" title="${esc(day.band.label)}"></div>`;
+      }
+      const laneEvs = timed.filter(e=>e.lane===l).sort((x,y)=>toMin(x.s)-toMin(y.s));
+      const colOf = {}, nCols = {};
+      laneEvs.forEach(ev=>{ // asigna columna dentro del carril si hay solapes
+        const used = laneEvs.filter(o=>o!==ev && colOf[o.id]!==undefined && toMin(o.s)<endMin(ev) && toMin(ev.s)<endMin(o)).map(o=>colOf[o.id]);
+        let c=0; while(used.includes(c)) c++; colOf[ev.id]=c;
+      });
+      laneEvs.forEach(ev=>{ const grp=laneEvs.filter(o=>toMin(o.s)<endMin(ev) && toMin(ev.s)<endMin(o)); nCols[ev.id]=Math.max(...grp.map(o=>colOf[o.id]))+1; });
+      laneEvs.forEach(ev=>{
+        const s=toMin(ev.s), en=endMin(ev), h=(en-s)*PPM-4;
+        const lines = Math.max(1, Math.floor((h-26)/17));
+        const dim = active.has(ev.st) ? "" : " dim";
+        const tags = (cl[ev.id]?`<span class="tag">Coincide</span>`:"") + (ev.st==="vds"?`<span class="tag vds">VDS</span>`:"") + (ev.tent?`<span class="tag tent">Opción ${ev.tent} · tentativa</span>`:"");
+        html += `<button class="ev ${ev.st}${ev.tent?" tent":""}${ev.e?"":" open-end"}${cl[ev.id]?" clash":""}${dim}" data-id="${ev.id}"
+          style="--lc:${laneColor(ev)};top:${(s-min)*PPM+2}px;height:${h}px;${nCols[ev.id]>1?`left:calc(16px + (100% - 24px) * ${colOf[ev.id]} / ${nCols[ev.id]});right:auto;width:calc((100% - 24px) / ${nCols[ev.id]} - 4px);`:""}"
+          aria-label="${esc(ev.s+(ev.e?"–"+ev.e:"")+", "+ev.ti+(ev.tent?", opción "+ev.tent+" tentativa":"")+", "+STATUS[ev.st])}">
+          <span class="t">${ev.s}${ev.e?"–"+ev.e:" · fin sin definir"} ${tags}</span>
+          <span class="ti" style="-webkit-line-clamp:${lines}">${esc(ev.ti)}</span></button>`;
+      });
+      html += `</div>`;
+    });
+    html += `</div></div>`;
+    if(day.band) html += `<p style="font-size:13px;color:var(--muted);margin:10px 2px 0"><span style="display:inline-block;width:6px;height:14px;border-radius:3px;background:var(--lane-block);vertical-align:-2px;margin-right:6px"></span>${esc(day.band.label)} (${day.band.start}–${day.band.end}).</p>`;
+  }
+
+  if(pending.length){
+    html += `<section class="tray"><h3>${current==="tbd"?"Pendientes de día y hora":"Sin hora asignada"}</h3>
+      <p>${current==="tbd"?"Actividades sin día asignado.":"Eventos de este día que todavía no tienen franja horaria."}</p><div class="cards">`;
+    pending.forEach(ev=>{
+      const dim = active.has(ev.st) ? "" : " dim";
+      html += `<button class="card${dim}" data-id="${ev.id}" style="--lc:${laneColor(ev)}">
+        <div class="who">${esc(ev.aud || LANES[ev.lane].name)}</div>
+        <div class="ti">${esc(ev.ti)}</div>
+        <div class="when">${esc(ev.when||"Hora TBC")}</div></button>`;
+    });
+    html += `</div></section>`;
+  }
+  view.innerHTML = html;
+  view.querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>openDetail(+b.dataset.id, cl));
+}
+
+function openDetail(id, cl){
+  const ev = E[id];
+  const dlg = document.getElementById("dlg");
+  const day = DAYS.find(d=>d.id===ev.d);
+  dlg.style.setProperty("--lc", laneColor(ev));
+  document.getElementById("dlg-title").textContent = ev.ti + (ev.tent?` (opción ${ev.tent}, tentativa)`:"");
+  const when = ev.s ? `${ev.s}${ev.e?"–"+ev.e:" (fin sin definir)"}` : (ev.when||"Hora TBC");
+  document.getElementById("dlg-meta").textContent =
+    (day.id==="tbd"?"Día TBC":`${day.dow} ${day.n} oct`) + ", " + when;
+  const rows = [
+    ["Carril", LANES[ev.lane].name + (ev.block?" (bloque estratégico)":"")],
+    ["Estado", STATUS[ev.st]],
+    ev.aud && ["Invitados", ev.aud],
+    (ev.venue || ev.loc) && ["Espacio", (ev.loc ? LOCS[ev.loc].name.replace(" · Fundación LAB","") : ev.venue) + (ev.locAssumed?" (TBC)":"")],
+    ev.desc && ["Formato", ev.desc],
+    ev.who && ["Participan", ev.who],
+    ev.note && ["Notas", ev.note]
+  ].filter(Boolean);
+  let body = `<dl>${rows.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`;
+  if(cl && cl[id]) body += `<div class="clash-note">⚠ Coincide con: ${cl[id].map(o=>`${esc(o.ti)} (${o.s}${o.e?"–"+o.e:""}, ${LANES[o.lane].name})`).join("; ")}</div>`;
+  if(ev.loc){
+    body += `<button class="maplink" id="maplink" aria-expanded="false">Ver en el plano</button><div id="minibox"></div>`;
+  }
+  document.getElementById("dlg-body").innerHTML = body;
+  const anchor=(document.activeElement && document.activeElement!==document.body) ? document.activeElement.getBoundingClientRect() : null;
+  dlg.showModal();
+  if(document.documentElement.classList.contains("embed")){
+    const top=Math.max(12,(anchor?anchor.top+window.scrollY:window.scrollY)-40);
+    dlg.style.top=top+"px";
+  }
+  const ml = document.getElementById("maplink");
+  if(ml) ml.onclick = ()=>{
+    const box = document.getElementById("minibox");
+    const open = ml.getAttribute("aria-expanded")==="true";
+    if(open){ box.innerHTML=""; ml.setAttribute("aria-expanded","false"); ml.textContent="Ver en el plano"; return; }
+    box.innerHTML = `<div class="mini">${mapHTML(ev.loc)}</div>` + (ev.locAssumed?`<div class="loc-note">Ubicación provisional: TBC.</div>`:"");
+    ml.setAttribute("aria-expanded","true"); ml.textContent="Ocultar plano";
+    const mini = box.querySelector(".mini"), L = LOCS[ev.loc];
+    const mw = 1250, mh = mw*855/1642;
+    mini.scrollLeft = mw*L.x/100 - mini.clientWidth/2;
+    mini.scrollTop  = mh*L.y/100 - mini.clientHeight/2 + 20;
+  };
+}
+document.getElementById("dlg-close").onclick=()=>document.getElementById("dlg").close();
+document.getElementById("dlg").addEventListener("click",e=>{ if(e.target.id==="dlg") e.target.close(); });
+
+render();
+
+/* Altura automática para iframe */
+(function(){
+  if(!document.documentElement.classList.contains("embed") || window.parent===window) return;
+  let last=0;
+  const send=()=>{ const h=Math.ceil(document.documentElement.scrollHeight); if(h!==last){ last=h; window.parent.postMessage({type:"flab-agenda-height",height:h},"*"); } };
+  new ResizeObserver(send).observe(document.body);
+  window.addEventListener("load",send); send();
+  document.addEventListener("click",()=>setTimeout(send,60));
+})();
+</script>
+</body>
+</html>
