@@ -240,6 +240,15 @@ const LOCS = {
   discovery:{name:"Discovery Stage", x:56.52, y:19.30, color:"#5b2bd6"}
 };
 const MAP_SRC = "img/plano-vds.webp";
+const BOLD_NAMES = ["Rafael Escamilla Domínguez", "Francisco José Vea Folch", "Jackie Sánchez-Molero", "Elena Zuriaga Agustí", "Juan Luis Hortelano", "Guillermo Berlanga", "José María Lagarón", "Juan Antonio Just", "Sergio Villanueva", "Ana Guasch Seculi", "Catalina Valencia", "Ingrid De Keijser", "Marga Sardá Lino", "Ramón Ferrandis", "Marta Chillarón", "Antonio Sánchez", "German Sborlini", "Darío Olivares", "Pablo Carrillo", "Fernando Pérez", "Javier Sánchez", "Araceli Císcar", "Pedro de Álava", "Amilcar Bedoya", "Vicente Choví", "Mario Tejeiro", "Lucía Bonilla", "Vicente Martí", "Pablo García", "Luis Llorens", "Jordi Oliver", "Rohith Varma", "Diana Morant", "Xavier Sans", "Nuño Arroyo", "David Peris", "Diana Meri", "Juan Pérez", "Raúl Martí", "Pablo Boix", "Luz Adell", "Eva Giner", "Nacho Mas"];
+const BOLD_LABELS = ["Tecnologías cuánticas e IA", "Alimentos y Biotecnología", "Salud y Biomedicina", "Materiales", "Energía"];
+function hl(v){
+  let h=esc(v);
+  BOLD_NAMES.forEach(n=>{ h=h.split(n).join("\u0000"+n+"\u0001"); });
+  BOLD_LABELS.forEach(n=>{ h=h.split(n+":").join("\u0000"+n+"\u0001:"); });
+  h=h.replace(/\b(Modera|Conduce)\b(?!ci)/g,"\u0000$1\u0001");
+  return h.replace(/\u0000/g,"<b>").replace(/\u0001/g,"</b>");
+}
 const DAYS = [
   {id:"d20", n:"20", dow:"Martes", label:"Side events", lanes:["veles"]},
   {id:"d21", n:"21", dow:"Miércoles", label:"Empresas y ecosistema emprendedor", lanes:["flab","vds"]},
@@ -445,7 +454,7 @@ function openDetail(id, cl){
     ev.who && ["Participan", ev.who],
     ev.note && ["Notas", ev.note]
   ].filter(Boolean);
-  let body = `<dl>${rows.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`;
+  let body = `<dl>${rows.map(([k,v])=>`<dt>${k}</dt><dd>${(k==="Participan"||k==="Formato")?hl(v):esc(v)}</dd>`).join("")}</dl>`;
   if(cl && cl[id]) body += `<div class="clash-note">⚠ Coincide con: ${cl[id].map(o=>`${esc(o.ti)} (${o.s}${o.e?"–"+o.e:""}, ${LANES[o.lane].name})`).join("; ")}</div>`;
   if(ev.loc){
     body += `<button class="maplink" id="maplink" aria-expanded="false">Ver en el plano</button><div id="minibox"></div>`;
